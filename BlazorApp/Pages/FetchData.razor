@@ -1,0 +1,76 @@
+﻿@page "/fetchdata"
+@using BlazorApp.Data
+@inject WeatherForecastService ForecastService
+
+<PageTitle>Weather forecast</PageTitle>
+
+<h1>Weather forecast</h1>
+
+<p>This component demonstrates fetching data from a service.</p>
+
+<Vote OnVote="HandleOnVoted" PrimaryButtonIcon="oi-beaker" PrimaryButtonText="Change Theme"
+      DangerButtonIcon="oi-clock" DangerButtonText="Reject" ResetButtonIcon="reload"
+      ResetButtonText="Reset">
+
+</Vote>
+
+@if (forecasts == null)
+{
+    <p><em>Loading...</em></p>
+}
+else
+{
+    <table class="table @gridTextCss">
+        <thead>
+            <tr>
+                <th>Date</th>
+                <th>Temp. (C)</th>
+                <th>Temp. (F)</th>
+                <th>Summary</th>
+            </tr>
+        </thead>
+        <tbody>
+            @foreach (var forecast in forecasts)
+            {
+                <tr>
+                    <td>@forecast.Date.ToShortDateString()</td>
+                    <td>@forecast.TemperatureC</td>
+                    <td>@forecast.TemperatureF</td>
+                    <td>@forecast.Summary</td>
+                </tr>
+            }
+        </tbody>
+    </table>
+}
+
+@code {
+    private string gridTextCss = "";
+
+    private WeatherForecast[]? forecasts;
+
+
+
+    protected override async Task OnInitializedAsync()
+    {
+        forecasts = await ForecastService.GetForecastAsync(DateOnly.FromDateTime(DateTime.Now));
+    }
+
+    private void HandleOnVoted(string result)
+    {
+        switch (result)
+        {
+            case "Approved":
+                gridTextCss = "text-success";
+                break;
+            case "Rejected":
+                gridTextCss = "text-danger";
+                break;
+
+            case "ResetUI":
+                gridTextCss = "";
+                break;
+            default:
+                break;
+        }
+    }
+}

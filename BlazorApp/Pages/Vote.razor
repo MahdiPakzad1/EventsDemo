@@ -1,0 +1,14 @@
+﻿
+<button class="btn btn-outline-primary mx-2" @onclick="ThumbsUp">
+    <span class="oi oi-@primaryButtonIcon"></span> @primaryButtonText
+</button>
+<button class="btn btn-outline-danger mx-2" @onclick="ThumbsDown">
+    <span class="oi oi-@dangerButtonIcon"></span> @dangerButtonText
+</button>
+@if (string.IsNullOrWhiteSpace(resetButtonIcon) == false &&
+    string.IsNullOrWhiteSpace(resetButtonText) == false)
+{
+    <button class="btn btn-outline-warning mx-2" @onclick="ResetUI">
+        <span class="oi oi-@resetButtonIcon"></span> @resetButtonText
+    </button>
+}
